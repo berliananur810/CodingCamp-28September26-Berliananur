@@ -141,7 +141,7 @@ Build a single-page, client-side web application using plain HTML, CSS, and Vani
     - Style inline error spans (e.g. red text) and the error banner (e.g. dismissible top banner)
     - _Requirements: 8.2, 8.3, 8.4_
 
-- [-] 12. Final checkpoint — Full integration verification
+- [x] 12. Final checkpoint — Full integration verification
   - Ensure all tests pass, ask the user if questions arise.
 
 ---
