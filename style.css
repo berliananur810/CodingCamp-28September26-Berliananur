@@ -1,0 +1,529 @@
+/* Expense & Budget Visualizer - Styles */
+/* Requirements: 8.2, 8.3, 8.4 */
+
+/* ============================================================
+   CSS Custom Properties
+   ============================================================ */
+:root {
+  --color-bg: #f5f5f5;
+  --color-surface: #ffffff;
+  --color-border: #e0e0e0;
+  --color-text: #212121;
+  --color-text-muted: #757575;
+  --color-accent: #1976d2;
+  --color-accent-hover: #1565c0;
+  --color-accent-active: #0d47a1;
+  --color-error: #d32f2f;
+  --color-error-bg: #fff3f3;
+  --color-error-border: #f5c6c6;
+  --color-warning-bg: #fff8e1;
+  --color-warning-border: #ffe082;
+  --color-warning-text: #7b5800;
+  --color-balance-positive: #2e7d32;
+  --color-balance-negative: #c62828;
+  --color-delete: #757575;
+  --color-delete-hover: #d32f2f;
+  --shadow-card: 0 2px 8px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.06);
+  --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --radius: 8px;
+  --radius-sm: 4px;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --font-size-base: 15px;
+  --font-size-sm: 13px;
+  --font-size-lg: 18px;
+  --font-size-xl: 24px;
+  --font-size-xxl: 36px;
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  --max-width: 800px;
+  --transition: 0.15s ease;
+}
+
+/* ============================================================
+   Reset & Base
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: var(--font-size-base); /* satisfies ≥ 14px body font */
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  min-width: 320px; /* responsive floor */
+  overflow-x: hidden; /* no horizontal scroll */
+}
+
+/* ============================================================
+   App Container — centered max-width column
+   ============================================================ */
+.app-container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--spacing-lg) var(--spacing-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg); /* ≥ 16px spacing between sections */
+}
+
+/* ============================================================
+   Header
+   ============================================================ */
+header {
+  text-align: center;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--color-accent);
+}
+
+header h1 {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-accent);
+  letter-spacing: -0.3px;
+}
+
+/* ============================================================
+   Shared Card Style — applied to all four sections
+   ============================================================ */
+.section-balance,
+.section-form,
+.section-list,
+.section-chart {
+  background-color: var(--color-surface);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: var(--spacing-lg);
+  border: 1px solid var(--color-border);
+}
+
+/* Section headings */
+.section-balance h2,
+.section-form h2,
+.section-list h2,
+.section-chart h2 {
+  font-size: var(--font-size-lg); /* ≥ 16px */
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ============================================================
+   Balance Display Section
+   ============================================================ */
+.section-balance {
+  text-align: center;
+}
+
+#balance-display {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md) 0;
+}
+
+#balance-value {
+  font-size: var(--font-size-xxl); /* ≥ 16px, visually prominent */
+  font-weight: 700;
+  color: var(--color-balance-positive);
+  letter-spacing: -0.5px;
+  transition: color var(--transition);
+}
+
+/* Negative balance state (toggled via JS adding a class) */
+#balance-value.negative {
+  color: var(--color-balance-negative);
+}
+
+/* ============================================================
+   Input Form Section
+   ============================================================ */
+.section-form form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.form-group label {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+/* Full-width inputs and selects */
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group select {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  font-family: var(--font-family);
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.15);
+}
+
+.form-group input[type="text"]:invalid:not(:placeholder-shown),
+.form-group input[type="number"]:invalid:not(:placeholder-shown) {
+  border-color: var(--color-error);
+}
+
+/* Custom select arrow */
+.form-group select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23757575' d='M1.41 0L6 4.58 10.59 0 12 1.41l-6 6-6-6z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+/* Submit button */
+#expense-form button[type="submit"] {
+  align-self: stretch;
+  padding: 12px var(--spacing-lg);
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: var(--font-family);
+  color: #ffffff;
+  background-color: var(--color-accent);
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition), box-shadow var(--transition),
+    transform var(--transition);
+  letter-spacing: 0.3px;
+}
+
+#expense-form button[type="submit"]:hover {
+  background-color: var(--color-accent-hover);
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.35);
+}
+
+#expense-form button[type="submit"]:active {
+  background-color: var(--color-accent-active);
+  transform: translateY(1px);
+}
+
+#expense-form button[type="submit"]:focus-visible {
+  outline: 3px solid rgba(25, 118, 210, 0.5);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Inline Validation Errors  (Requirement 8.4)
+   ============================================================ */
+.error {
+  display: block;
+  font-size: var(--font-size-sm);
+  color: var(--color-error);
+  min-height: 1em; /* reserve space so layout doesn't shift */
+  line-height: 1.4;
+}
+
+.error:empty {
+  display: none; /* hide when no message */
+}
+
+/* ============================================================
+   Error Banner  (Requirement 8.4)
+   ============================================================ */
+.error-banner {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background-color: var(--color-warning-bg);
+  border: 1px solid var(--color-warning-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-warning-text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* shown/hidden via the `hidden` attribute on the element */
+}
+
+.error-banner[hidden] {
+  display: none;
+}
+
+#error-banner-message {
+  flex: 1;
+  min-width: 0;
+}
+
+#error-banner-close {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--color-warning-text);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--transition), border-color var(--transition);
+}
+
+#error-banner-close:hover {
+  background-color: rgba(123, 88, 0, 0.1);
+  border-color: var(--color-warning-border);
+}
+
+#error-banner-close:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   Transaction List Section
+   ============================================================ */
+#transaction-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+/* Individual transaction row */
+#transaction-list li[data-id] {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: 10px var(--spacing-md);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  transition: box-shadow var(--transition);
+}
+
+#transaction-list li[data-id]:hover {
+  box-shadow: var(--shadow-card);
+}
+
+.item-name {
+  flex: 1 1 auto;
+  font-weight: 500;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.item-amount {
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--color-balance-positive);
+  white-space: nowrap;
+  min-width: 60px;
+  text-align: right;
+}
+
+.item-category {
+  flex-shrink: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  background-color: #e3f2fd;
+  color: #0d47a1;
+  padding: 2px 8px;
+  border-radius: 12px;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+/* Delete button */
+.delete-btn {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  font-size: 0.85rem;
+  color: var(--color-delete);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: color var(--transition), background-color var(--transition),
+    border-color var(--transition);
+  /* subtle by default, accessible on focus/hover */
+}
+
+.delete-btn:hover {
+  color: var(--color-delete-hover);
+  background-color: #fdecea;
+  border-color: #f5c6c6;
+}
+
+.delete-btn:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Empty state message */
+.no-transactions {
+  text-align: center;
+  font-style: italic;
+  color: var(--color-text-muted);
+  padding: var(--spacing-lg) 0;
+}
+
+/* ============================================================
+   Pie Chart Section
+   ============================================================ */
+.chart-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+}
+
+.chart-container canvas {
+  max-width: 400px;
+  width: 100%;
+  height: auto;
+}
+
+/* ============================================================
+   Fatal Error — Full-page fallback (Requirement 8.4)
+   ============================================================ */
+.fatal-error {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  background-color: var(--color-error-bg);
+  color: var(--color-error);
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  text-align: center;
+  padding: var(--spacing-xl);
+  z-index: 9999;
+}
+
+.fatal-error::before {
+  content: "⚠";
+  font-size: 3rem;
+}
+
+/* ============================================================
+   Responsive — 320px to 1440px
+   ============================================================ */
+
+/* Tablet and up: slightly more padding */
+@media (min-width: 600px) {
+  .app-container {
+    padding: var(--spacing-xl) var(--spacing-lg);
+  }
+
+  header h1 {
+    font-size: var(--font-size-xxl);
+  }
+
+  #balance-value {
+    font-size: 3rem;
+  }
+
+  #expense-form button[type="submit"] {
+    align-self: flex-start;
+    min-width: 160px;
+  }
+
+  #transaction-list li[data-id] {
+    gap: var(--spacing-md);
+  }
+}
+
+/* Desktop */
+@media (min-width: 900px) {
+  .app-container {
+    padding: var(--spacing-xl) 0;
+  }
+}
+
+/* Narrow phones (320–359px): tighten card padding */
+@media (max-width: 359px) {
+  .section-balance,
+  .section-form,
+  .section-list,
+  .section-chart {
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+
+  .app-container {
+    padding: var(--spacing-md) var(--spacing-sm);
+    gap: var(--spacing-md);
+  }
+
+  .item-name {
+    font-size: var(--font-size-sm);
+  }
+
+  .item-amount {
+    min-width: 48px;
+  }
+}
+
+/* ============================================================
+   Reduced Motion
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
