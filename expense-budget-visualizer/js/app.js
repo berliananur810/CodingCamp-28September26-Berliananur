@@ -51,8 +51,14 @@ function isValidTransaction(t) {
 /**
  * Reads Transaction data from localStorage.
  * Parses the stored JSON array and filters out any entries that do not satisfy
- * the Transaction validation rules. Returns an empty array if the key is absent,
- * the value cannot be parsed, or the parsed value is not an array.
+ * the Transaction validation rules.
+ *
+ * Returns an object with:
+ * - `data`: array of valid Transaction objects (may be empty)
+ * - `hadParseError`: true only when localStorage contained a non-null value
+ *   that could not be parsed as JSON, was not an array, or contained at least
+ *   one entry that failed Transaction validation. False when the key is absent
+ *   (storage was simply empty) or when all entries are valid.
  *
  * Validation rules per entry:
  * - id: non-empty string
@@ -61,17 +67,34 @@ function isValidTransaction(t) {
  * - category: one of "Food", "Transport", "Fun"
  * - timestamp: finite positive integer
  *
- * @returns {Transaction[]} Array of valid Transaction objects (may be empty)
+ * @returns {{ data: Transaction[], hadParseError: boolean }}
  */
 function loadFromStorage() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw === null) return [];
-    const parsed = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return [];
-    return parsed.filter(isValidTransaction);
+
+    // Key absent — storage is simply empty, no error
+    if (raw === null) return { data: [], hadParseError: false };
+
+    let parsed;
+    try {
+      parsed = JSON.parse(raw);
+    } catch (e) {
+      // JSON is malformed — data existed but cannot be read
+      return { data: [], hadParseError: true };
+    }
+
+    // Parsed value is not an array — unexpected shape
+    if (!Array.isArray(parsed)) return { data: [], hadParseError: true };
+
+    const valid = parsed.filter(isValidTransaction);
+
+    // If any entry was discarded, report a parse error so the caller can warn
+    const hadParseError = valid.length < parsed.length;
+
+    return { data: valid, hadParseError };
   } catch (e) {
-    return [];
+    return { data: [], hadParseError: true };
   }
 }
 
@@ -529,32 +552,37 @@ function resetForm() {
  * Loads persisted transactions, performs the initial render, and wires up
  * the form-submit and list-delete event listeners.
  *
- * Requirements: 8.1
+ * Requirements: 2.4, 2.6, 6.3, 6.4, 7.6, 8.1
  */
 document.addEventListener('DOMContentLoaded', () => {
-  // Guard: localStorage must be available
+  // ── 1. Guard: localStorage must be available ───────────────────────────────
   if (typeof localStorage === 'undefined') {
     document.body.innerHTML =
       '<p class="fatal-error">This browser does not support localStorage. The app cannot run.</p>';
     return;
   }
 
-  // Load persisted state
-  transactions = loadFromStorage();
+  // ── 2. Load persisted state; warn if stored data was corrupt ───────────────
+  const { data, hadParseError } = loadFromStorage();
+  transactions = data;
 
-  // Initial render
+  if (hadParseError) {
+    showErrorBanner('Some saved data could not be read and has been discarded.');
+  }
+
+  // ── 3. Initial render ──────────────────────────────────────────────────────
+  initChart();
   renderList(transactions);
   renderBalance(transactions);
-  initChart();
   renderChart(transactions);
 
-  // Wire up form submission
+  // ── 4. Wire up form submission ─────────────────────────────────────────────
   const form = document.getElementById('expense-form');
   if (form) {
     form.addEventListener('submit', handleFormSubmit);
   }
 
-  // Wire up delete buttons via event delegation on the list
+  // ── 5. Wire up delete buttons via event delegation on the list ─────────────
   const list = document.getElementById('transaction-list');
   if (list) {
     list.addEventListener('click', (e) => {

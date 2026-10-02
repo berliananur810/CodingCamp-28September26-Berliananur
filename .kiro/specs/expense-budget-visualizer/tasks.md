@@ -120,7 +120,7 @@ Build a single-page, client-side web application using plain HTML, CSS, and Vani
     - **Validates: Requirements 5.1, 5.7, 3.5**
 
 - [x] 10. Implement the Input_Form submit handler and full application wiring
-  - [-] 10.1 Implement `handleFormSubmit(event)` and `resetForm()` in `js/app.js`
+  - [x] 10.1 Implement `handleFormSubmit(event)` and `resetForm()` in `js/app.js`
     - `handleFormSubmit`: prevents default, reads field values, calls `validateForm`; on invalid input displays inline errors and returns; on valid input builds a Transaction object (using `generateId()` and `Date.now()`), calls `saveToStorage` first — on write failure shows error banner and returns — on success prepends to `transactions`, calls `renderList`, `renderBalance`, `renderChart`, then `resetForm`
     - `resetForm()`: clears all field values and all error spans
     - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 6.1, 6.5, 8.1_
@@ -133,15 +133,15 @@ Build a single-page, client-side web application using plain HTML, CSS, and Vani
     - Attach delegated `click` listener on `#transaction-list` to call `handleDelete` when a `.delete-btn` is clicked
     - _Requirements: 2.4, 2.6, 6.3, 6.4, 7.6_
 
-- [~] 11. Implement CSS styling
-  - [~] 11.1 Write `css/style.css` with responsive layout and visual design
+- [x] 11. Implement CSS styling
+  - [ ] 11.1 Write `css/style.css` with responsive layout and visual design
     - Use a single-column layout; separate Input_Form, Balance_Display, Transaction_List, and Pie_Chart into visually distinct sections with at least 16px spacing or a visible border between them
     - Body font ≥ 14px; headings and Balance_Display value ≥ 16px
     - Responsive from 320px to 1440px: no horizontal scroll, no overlapping elements, all four sections reachable via vertical scroll
     - Style inline error spans (e.g. red text) and the error banner (e.g. dismissible top banner)
     - _Requirements: 8.2, 8.3, 8.4_
 
-- [~] 12. Final checkpoint — Full integration verification
+- [-] 12. Final checkpoint — Full integration verification
   - Ensure all tests pass, ask the user if questions arise.
 
 ---
